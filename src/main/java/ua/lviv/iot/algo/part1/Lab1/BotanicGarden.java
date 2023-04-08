@@ -13,6 +13,7 @@ public class BotanicGarden extends Garden {
     private int numberOfFruitTrees;
     private int numberOfGreenhouses;
 
+
     public boolean hasOrchard(){
         return false;
     }
