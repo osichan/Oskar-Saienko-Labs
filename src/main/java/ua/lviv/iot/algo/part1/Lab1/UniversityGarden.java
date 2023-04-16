@@ -12,6 +12,15 @@ public class UniversityGarden extends Garden {
     private int numberOfSculptures;
 
     @Override
+    public String getHeaders() {
+        return super.getHeaders() + ", numberOfSculptures";
+    }
+    @Override
+    public String toCSV() {
+        return super.toCSV() + ", " + numberOfSculptures;
+    }
+
+    @Override
     public boolean hasOrchard() {
         return false;
     }

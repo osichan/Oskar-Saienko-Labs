@@ -7,8 +7,17 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString(callSuper = true)
-public class Farmstead extends Garden{
+public class Farmstead extends Garden {
     private int houseArea;
+
+    @Override
+    public String getHeaders() {
+        return super.getHeaders() + ", houseArea";
+    }
+    @Override
+    public String toCSV() {
+        return super.toCSV() + ", " + houseArea;
+    }
 
     @Override
     public boolean hasOrchard() {

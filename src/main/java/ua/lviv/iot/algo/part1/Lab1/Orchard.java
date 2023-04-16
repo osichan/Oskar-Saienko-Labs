@@ -11,6 +11,15 @@ public class Orchard extends Garden {
     private int numberOfPods;
 
     @Override
+    public String getHeaders() {
+        return super.getHeaders() + ", numberOfPods";
+    }
+    @Override
+    public String toCSV() {
+        return super.toCSV() + ", " + numberOfPods;
+    }
+
+    @Override
     public boolean hasOrchard() {
         return true;
     }

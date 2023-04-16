@@ -11,30 +11,29 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 class BotanicGardenTest {
 
     @Test
-    void hasOrchard() throws Exception {
-        BotanicGarden testClass =new BotanicGarden(1,2,3,4);
+    void hasOrchard() {
+        BotanicGarden testClass = new BotanicGarden(1, 2, 3, 4);
 
         assertFalse(testClass.hasOrchard());
     }
 
     @Test
-    void hasVegetableGarden() throws Exception {
-        BotanicGarden testClass =new BotanicGarden(1,2,3,4);
+    void hasVegetableGarden() {
+        BotanicGarden testClass = new BotanicGarden(1, 2, 3, 4);
 
         assertTrue(testClass.hasVegetableGarden());
     }
 
     @Test
-    void setNumberOfFruitTrees() throws Exception {
-        BotanicGarden testClass =new BotanicGarden(1,2,3,4);
+    void setNumberOfFruitTrees() {
+        BotanicGarden testClass = new BotanicGarden(1, 2, 3, 4);
         testClass.setNumberOfFruitTrees(2);
 
-        assertEquals(2,testClass.getNumberOfFruitTrees());
+        assertEquals(2, testClass.getNumberOfFruitTrees());
     }
 
     @Test
-    public void testToString()
-    {
+    public void testToString() {
         ToStringVerifier.forClass(BotanicGarden.class).verify();
     }
 }
