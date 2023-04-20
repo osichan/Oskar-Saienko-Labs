@@ -26,10 +26,15 @@ public class GardenWriterTest{
         writer = new GardenWriter();
         gardens = new ArrayList<>();
         gardens.addAll(List.of(
-                new BotanicGarden(1, 2, 3, 4),
-                new Orchard(5, 6, 7),
-                new Farmstead(8, 9, 10),
-                new UniversityGarden(11, 12, 13)));
+                new Farmstead(1,2,3),
+                new Orchard(4,5,6),
+                new UniversityGarden(7,8,9),
+                new BotanicGarden(10,11,12,13),
+                new Farmstead(14,15,16),
+                new Orchard(17,18,19),
+                new UniversityGarden(20,20,20),
+                new BotanicGarden(21,22,23,24)
+        ));
     }
 
     @AfterEach
@@ -51,6 +56,14 @@ public class GardenWriterTest{
         Path expected = new File(NON_SORTED_EXPECTED_FILENAME).toPath();
         Assertions.assertEquals(-1L,Files.mismatch(expected,actual));
     }
+
+    @Test
+    public void isFileExpectedCSVCreatedForNonSorted() {
+        writer.writeNonSorted(gardens);
+        File expectedFile = new File(NON_SORTED_EXPECTED_FILENAME);
+        Assertions.assertTrue(expectedFile.exists());
+    }
+
     @Test
     public void testIsEmptyForSorted() {
         writer.writeSorted(null);
@@ -64,11 +77,10 @@ public class GardenWriterTest{
         Path expected = new File(SORTED_EXPECTED_FILENAME).toPath();
         Assertions.assertEquals(-1L,Files.mismatch(expected,actual));
     }
-
     @Test
-    public void isFileExpectedCSVCreated() {
+    public void isFileExpectedCSVCreatedForSorted() {
         writer.writeNonSorted(gardens);
-        File expectedFile = new File(NON_SORTED_EXPECTED_FILENAME);
+        File expectedFile = new File(SORTED_EXPECTED_FILENAME);
         Assertions.assertTrue(expectedFile.exists());
     }
 }

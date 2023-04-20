@@ -1,8 +1,10 @@
 package ua.lviv.iot.algo.part1.Lab1;
 
+
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -12,11 +14,21 @@ public class GardenWriter {
             return;
         }
         try (FileWriter writer = new FileWriter("nonSortedResult.csv")) {
-            for (Garden garden : gardens) {
-                writer.write(garden.getHeaders());
-                writer.write(System.getProperty("line.separator"));
-                writer.write(garden.toCSV());
-                writer.write(System.getProperty("line.separator"));
+            List<String> usedClasses = new ArrayList<>();
+            for(Garden gardenToWrite:gardens){
+                if(!usedClasses.contains(gardenToWrite.getClass().getName())) {
+                    writer.write(gardenToWrite.getHeaders());
+                    writer.write(System.getProperty("line.separator"));
+                    writer.write(gardenToWrite.toCSV());
+                    writer.write(System.getProperty("line.separator"));
+                    usedClasses.add(gardenToWrite.getClass().getName());
+                    for(Garden gardenToCheckForSameNames :gardens){
+                        if(gardenToWrite.getClass().getName().equals(gardenToCheckForSameNames.getClass().getName()) && gardenToWrite!=gardenToCheckForSameNames){
+                            writer.write(gardenToCheckForSameNames.toCSV());
+                            writer.write(System.getProperty("line.separator"));
+                        }
+                    }
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -28,22 +40,21 @@ public class GardenWriter {
             return;
         }
         try (FileWriter writer = new FileWriter("sortedResult.csv")) {
-            List<Field> allFieldsNormal = new LinkedList<>();
-            List<Field[]> allFields = new LinkedList<>();
-            allFields.add(Garden.class.getDeclaredFields());
-
+            List<Field> allFields = new LinkedList<>(List.of(Garden.class.getDeclaredFields()));
+            List<String> allNamesOfClasses = new ArrayList<>();
+            allNamesOfClasses.add(Garden.class.getName());
             for (Garden garden : gardens) {
-                allFields.add(garden.getClass().getDeclaredFields());
+                if(!allNamesOfClasses.contains(garden.getClass().getName())) {
+                    allFields.addAll(List.of(garden.getClass().getDeclaredFields()));
+                    allNamesOfClasses.add(garden.getClass().getName());
+                }
             }
 
-            for (Field[] field : allFields) {
-                for (Field field_1 : field) {
-                    if (field != allFields.get(allFields.size() - 1) || field_1 != field[field.length - 1]) {
-                        writer.write(field_1.getName() + ",");
-                    } else {
-                        writer.write(field_1.getName());
-                    }
-                    allFieldsNormal.add(field_1);
+            for (Field field : allFields) {
+                if (field != allFields.get(allFields.size() - 1) ) {
+                    writer.write(field.getName() + ",");
+                } else {
+                    writer.write(field.getName());
                 }
             }
 
@@ -52,28 +63,30 @@ public class GardenWriter {
                 Field[] parentClassFields = garden.getClass().getSuperclass().getDeclaredFields();
                 writer.write(System.getProperty("line.separator"));
 
-                for (int j = 0; j < allFieldsNormal.size(); j++) {
+                for (Field field : allFields) {
                     boolean isThisFieldNull = true;
                     for (Field parentClassField : parentClassFields) {
-                        if (parentClassField.getName().equals(allFieldsNormal.get(j).getName())) {
+                        if (parentClassField.getName().equals(field.getName())) {
                             parentClassField.setAccessible(true);
                             writer.write(String.valueOf(parentClassField.get(garden)));
                             isThisFieldNull = false;
                             break;
                         }
                     }
-                    for (Field classField : classFields) {
-                        if (classField.getName().equals(allFieldsNormal.get(j).getName())) {
-                            classField.setAccessible(true);
-                            writer.write(String.valueOf(classField.get(garden)));
-                            isThisFieldNull = false;
-                            break;
+                    if (isThisFieldNull) {
+                        for (Field classField : classFields) {
+                            if (classField.getName().equals(field.getName())) {
+                                classField.setAccessible(true);
+                                writer.write(String.valueOf(classField.get(garden)));
+                                isThisFieldNull = false;
+                                break;
+                            }
                         }
                     }
                     if (isThisFieldNull) {
                         writer.write("-");
                     }
-                    if (j != allFieldsNormal.size() - 1) {
+                    if (!field.equals(allFields.get(allFields.size() - 1))) {
                         writer.write(",");
                     }
                 }

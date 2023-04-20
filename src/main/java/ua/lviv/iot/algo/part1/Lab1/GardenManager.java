@@ -36,7 +36,11 @@ public class GardenManager {
                 new Farmstead(1,2,3),
                 new Orchard(4,5,6),
                 new UniversityGarden(7,8,9),
-                new BotanicGarden(10,11,12,13)
+                new BotanicGarden(10,11,12,13),
+                new Farmstead(14,15,16),
+                new Orchard(17,18,19),
+                new UniversityGarden(20,20,20),
+                new BotanicGarden(21,22,23,24)
         ));
 
         GardenWriter writer = new GardenWriter();
