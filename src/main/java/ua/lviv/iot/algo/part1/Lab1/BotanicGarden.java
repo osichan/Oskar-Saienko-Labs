@@ -12,7 +12,14 @@ import lombok.ToString;
 public class BotanicGarden extends Garden {
     private int numberOfFruitTrees;
     private int numberOfGreenhouses;
-
+    @Override
+    public String getHeaders() {
+        return super.getHeaders() + ", numberOfGreenhouses, " + "numberOfFruitTrees";
+    }
+    @Override
+    public String toCSV() {
+        return super.toCSV() + ", " + numberOfGreenhouses + ", " + numberOfFruitTrees;
+    }
 
     public boolean hasOrchard(){
         return false;
@@ -22,7 +29,6 @@ public class BotanicGarden extends Garden {
     public boolean hasVegetableGarden() {
         return true;
     }
-
 
   public BotanicGarden(double area, int numberOfFlowers, int numberOfFruitTrees, int numberOfGreenhouses) {
     super(area, numberOfFlowers);
